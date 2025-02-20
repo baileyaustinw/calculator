@@ -1,6 +1,7 @@
 const calcButtons = document.querySelector("#calcButtons");
 const calcInput = document.querySelector("#calcInput > p");
 const operators = ['x', '-', '+', '÷'];
+const notAllowed = ['shift', 'meta', 'enter', 'control', 'alt'];
 
 let initial = 1;
 let executed = false;
@@ -50,7 +51,7 @@ const handleSecondNumber = (buttonText) => {
 };
 
 const addToCalc = function(calcButton) {
-    const buttonText = calcButton.textContent;
+    const buttonText = calcButton.textContent ? calcButton.textContent : calcButton;
     console.log(`firstNumber: ${firstNumber}`);
     console.log(`operator: ${operator}`);
     console.log(`secondNumber: ${secondNumber}`);
@@ -125,6 +126,7 @@ const addToCalc = function(calcButton) {
             }
             break;
         default:
+            if (notAllowed.includes(buttonText.toLowerCase())) return;
             // do not allow an operator as the first input
             if (initial && operators.includes(buttonText)) return;
             
@@ -136,7 +138,7 @@ const addToCalc = function(calcButton) {
                 return;
             } else if (!operator && !operators.includes(buttonText)) {
                 if (calcInput.textContent !== 0) {
-                    firstNumber += calcInput.textContent;
+
                     firstNumber += buttonText;
                     setInputText(calcInput.textContent + buttonText);
                 } else {
@@ -200,4 +202,8 @@ buttons.forEach(element => {
     element.addEventListener('click', function() {
         addToCalc(element);
     });
+});
+
+document.addEventListener('keydown', function(e) {
+    addToCalc(e.key.toString());
 });
