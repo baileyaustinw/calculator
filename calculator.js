@@ -126,6 +126,9 @@ const addToCalc = function(calcButton) {
             }
             break;
         default:
+            // limit input size to 10 digits
+            if (calcInput.textContent.length == 10) return;
+            // make sure the input is allowed
             if (notAllowed.includes(buttonText.toLowerCase())) return;
             // do not allow an operator as the first input
             if (initial && operators.includes(buttonText)) return;
